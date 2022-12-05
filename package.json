@@ -1,22 +1,15 @@
 {
-  "name": "grabapi",
+  "name": "grabserver",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DuongCuongDEV/GrabAPI.git"
-  },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/DuongCuongDEV/GrabAPI/issues"
-  },
-  "homepage": "https://github.com/DuongCuongDEV/GrabAPI#readme",
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "mysql2": "^2.3.3"
   }
 }
