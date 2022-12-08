@@ -116,7 +116,29 @@ app.put('/doiMatKhau', (req, res) => {
 })
 
 
+app.get('/trips/near', (req, res) => {
+    connection.connect(() => {
+        connection.query("SELECT longtitude_bat_dau,latitude_bat_dau,longtitude_ket_thuc,latitude_ket_thuc,ma_chuyen from Thong_tin_chuyen_xe inner WHERE ma_loai_phuong_tien = (?) ", [req.body.maPhuongTien], (err, thongtincacchuyenxe) => {
+            res.send(thongtincacchuyenxe)
+        })
+    })
+})
 
+app.get('/trips/tripId', (req, res) => {
+    connection.connect(() => {
+        connection.query("SELECT * from Thong_tin_chuyen_xe  WHERE ma_chuyen = (?) ", [req.body.machuyen], (err,thongtinchuyenxe) => {
+            res.send(thongtinchuyenxe)
+        })
+    })
+})
+
+app.put('/trips/tripId/', (req, res) => {
+    connection.connect(() => {
+        connection.query("UPDATE thong_tin_chuyen_xe SET ma_tai_xe = ? AND ma_trang_thai = ? WHERE ma_chuyen = (?)", [req.body.maTaiXe, req.body.maTrangThai, req.body.maChuyen], (err) => {
+            res.send("Đặt chuyến thành công")
+        })
+    })
+})
 
 
 //Mở một cổng 3000 để chạy
