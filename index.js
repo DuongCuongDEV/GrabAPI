@@ -81,19 +81,23 @@ app.get('/userInformation', (req, res) => {
 //API tạo tài khoản cho người dùng
 app.post('/creatAccount', (req, res) => {
     connection.connect(() => {
-
-        //API tạo thông tin người dùng
+        let maND = -1
+            //API tạo thông tin người dùng
         connection.query("INSERT INTO `thong_tin_nguoi_dung` (`ho_va_ten`, `anh_dai_dien`, `sdt1`, `sdt2`, `email`, `ma_gioi_tinh`, `ngay_sinh`, `dia_chi_chi_tiet`, `ma_xa`) VALUES (?)", [
             [req.body.hoVaTen, req.body.anhDaiDien, req.body.sdt1, req.body.sdt2, req.body.email, req.body.maGioiTinh, req.body.ngaySinh, req.body.diaChiChiTiet, req.body.maXa]
         ], (err) => {
-            res.send("Thêm thành công")
-        })
+            res && connection.query('select ma_nguoi_dung from thong_tin_nguoi_dung order by ma_nguoi_dung desc limit 1', (err, kq) => {
+                maND = kq[0].ma_nguoi_dung
 
-        //API tạo thông tin tài khoản
-        connection.query("INSERT INTO `thong_tin_tai_Khoan` (`maNguoiDung`, `maQuyenNguoiDung`, `ngayTao`, `ngayCapNhatCuoi`, `bienSoXe`, `ma_trang_thai`, `maNguoiTao`, `tenDangNhap`, `matKhau`) VALUES (?)", [
-            [req.body.maNguoiDung, req.body.maQuyenNguoiDung, req.body.ngayTao, req.body.ngayCapNhatCuoi, req.body.bienSoXe, req.body.ma_trang_thai, req.body.maNguoiTao, req.body.tenDangNhap, req.body.matKhau]
-        ], (err) => {
-            res.send("Thêm tài khoản thành công")
+                //API tạo thông tin tài khoản
+                connection.query("INSERT INTO `thong_tin_tai_Khoan` (`maNguoiDung`, `maQuyenNguoiDung`, `ngayTao`, `ngayCapNhatCuoi`, `bienSoXe`, `ma_trang_thai`, `maNguoiTao`, `tenDangNhap`, `matKhau`) VALUES (?)", [
+                    [maND, req.body.maQuyenNguoiDung, req.body.ngayTao, req.body.ngayCapNhatCuoi, req.body.bienSoXe, req.body.ma_trang_thai, req.body.maNguoiTao, req.body.tenDangNhap, req.body.matKhau]
+                ], (err) => {
+                    console.log("mand", maND)
+                    res.send("Thêm tài khoản thành công")
+                })
+            })
+
         })
     })
 })
@@ -114,6 +118,7 @@ app.put('/doiMatKhau', (req, res) => {
         })
     })
 })
+
 
 
 
