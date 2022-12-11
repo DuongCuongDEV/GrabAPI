@@ -1,3 +1,5 @@
+"trip strict";
+
 const Trip = function (trip) {
     this.longtitude_bat_dau = trip.longtitude_bat_dau;
     this.latitude_bat_dau = trip.latitude_bat_dau;
@@ -8,7 +10,7 @@ const Trip = function (trip) {
 };
 
 Trip.gettrips = function (maloaiphuongtien, result) {
-    connection.query("SELECT longtitude_bat_dau,latitude_bat_dau,longtitude_ket_thuc,latitude_ket_thuc,ma_chuyen,ma_nguoi_dat from thong_tin_chuyen_xe inner WHERE ma_loai_phuong_tien = (?) ",[maloaiphuongtien],(err,res) =>  {
+    connection.query("SELECT longtitude_bat_dau,latitude_bat_dau,longtitude_ket_thuc,latitude_ket_thuc,ma_chuyen,ma_nguoi_dat from thong_tin_chuyen_xe",(err,res) =>  {
         if (err) {
             result(err, null);
           } else {
@@ -25,6 +27,19 @@ Trip.displaytrip = function (machuyen, result) {
             result(null, res);
           }
     });
+};
+
+Trip.update = function (id, trip, result) {
+  connection.query("UPDATE users SET ? WHERE _id = ?", [trip, id], function (
+    err,
+    res
+  ) {
+    if (err) {
+      result(null, err);
+    } else {
+      result(null, res);
+    }
+  });
 };
 
 module.exports = Trip;

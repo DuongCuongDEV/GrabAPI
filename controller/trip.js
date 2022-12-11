@@ -1,7 +1,7 @@
 const Trip = require("../models/trip");
 
 exports.getTrips = async (req, res) => {
-    Trip.gettrips(req.body.maloaixe, function(err, trip) {
+    Trip.gettrips(function(err, trip) {
         if (err) {
             return res.status(403).send(err);
         }
@@ -18,3 +18,12 @@ exports.displayTrip = async (req, res) => {
     } );
 };
 
+exports.updateTrip = async (req, res) => {
+    const id = req.params.machuyen;
+    User.update(id, new Trip(req.body), function (err, trip) {
+      if (err) {
+        return res.status(403).send(err);
+      }
+      res.json(trip);
+    });
+  };

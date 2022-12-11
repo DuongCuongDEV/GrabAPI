@@ -4,7 +4,7 @@ const connection = {
   host: "localhost",
   user: process.env.user,
   password: process.env.pass,
-  database: "grab",
+  database: "Grab",
 };
 
 module.exports = connection;
