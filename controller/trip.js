@@ -10,7 +10,7 @@ exports.getTrips = async (req, res) => {
 };
 
 exports.displayTrip = async (req, res) => {
-    Trip.displaytrip(req.body.machuyen, function(err, trip) {
+    Trip.displaytrip(req.params.machuyen, function(err, trip) {
         if (err) {
             return res.status(403).send(err);
         }
@@ -20,7 +20,7 @@ exports.displayTrip = async (req, res) => {
 
 exports.updateTrip = async (req, res) => {
     const id = req.params.machuyen;
-    User.update(id, new Trip(req.body), function (err, trip) {
+    Trip.update(id, new Trip(req.body), function (err, trip) {
       if (err) {
         return res.status(403).send(err);
       }

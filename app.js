@@ -34,7 +34,7 @@ function mysqlConnect() {
 
   app.use(bodyParser.json());
   app.use(cors());
-  app.use(tripRoutes);
+  app.use("/api", tripRoutes);
 
   const port = process.env.PORT || 3000;
 
