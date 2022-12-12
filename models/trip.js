@@ -9,7 +9,7 @@ const Trip = function (trip) {
     this.ma_nguoi_dat = trip.ma_nguoi_dat;
 };
 
-Trip.gettrips = function (maloaiphuongtien, result) {
+Trip.gettrips = function (result) {
     connection.query("SELECT longtitude_bat_dau,latitude_bat_dau,longtitude_ket_thuc,latitude_ket_thuc,ma_chuyen,ma_nguoi_dat from thong_tin_chuyen_xe",(err,res) =>  {
         if (err) {
             result(err, null);
