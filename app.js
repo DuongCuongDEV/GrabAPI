@@ -6,9 +6,9 @@ const mysql = require('mysql2');
 const bodyParser = require('body-parser');
 
 const connection = require("./database/mysqlDB");
-
+require("dotenv").config();
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000;
 
 // database init
 function mysqlConnect() {
@@ -33,48 +33,22 @@ function mysqlConnect() {
 mysqlConnect();
 
 //Routes
+const tinhRoutes = require("./routes/layTinh");
+const huyenRoutes = require("./routes/layHuyen");
+const xaRoutes = require("./routes/layXa");
+const thongTinNguoiDung = require("./routes/dangKy");
 const thongTinTaiKhoanRoutes = require("./routes/thongTinTaiKhoan");
 const sendEmailRoutes = require("./routes/sendEmail");
 const changePasswordRoutes = require("./routes/changePassword");
-
 
 //Để đọc dạng json người dùng nhập vào
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-
-
-//API lấy về các tỉnh
-app.get('/province ', (req, res) => {
-    connection.connect(() => {
-        connection.query("SELECT * FROM tinh", (err, ketQuaTinh) => {
-            res.send(ketQuaTinh)
-        })
-    })
-})
-
-//API lấy các huyện của một tỉnh nào đấy
-app.get('/district', (req, res) => {
-    connection.connect(() => {
-        connection.query("SELECT * FROM huyen where ma_tinh = (?)", 
-            [req.body.maTinh]
-        , (err, ketquahuyen) => {
-            res.send(ketquahuyen)
-        })
-    })
-})
-
-
-//API lấy các xã của một huyện nào đấy
-app.get('/commune', (req, res) => {
-    connection.connect(() => {
-        connection.query("SELECT * FROM xa where ma_huyen = (?)", 
-            [req.body.maHuyen]
-        , (err, ketquaxa) => {
-            res.send(ketquaxa)
-        })
-    })
-})
+app.use("/api", tinhRoutes);
+app.use("/api", huyenRoutes);
+app.use("/api", xaRoutes);
+app.use("/api", thongTinNguoiDung)
 
 //API check xem số điện thoại đấy tồn tại chưa
 app.get('/checkPhoneNumber', (req, res) => {
@@ -98,25 +72,6 @@ app.get('/userInformation', (req, res) => {
     })
 })
 
-//API tạo tài khoản cho người dùng
-app.post('/creatAccount', (req, res) => {
-    connection.connect(() => {
-
-        //API tạo thông tin người dùng
-        connection.query("INSERT INTO `thong_tin_nguoi_dung` (`ho_va_ten`, `anh_dai_dien`, `sdt1`, `sdt2`, `email`, `ma_gioi_tinh`, `ngay_sinh`, `dia_chi_chi_tiet`, `ma_xa`) VALUES (?)", 
-            [req.body.hoVaTen, req.body.anhDaiDien, req.body.sdt1, req.body.sdt2, req.body.email, req.body.maGioiTinh, req.body.ngaySinh, req.body.diaChiChiTiet, req.body.maXa]
-        , (err) => {
-            res.send("Thêm thành công")
-        })
-
-        //API tạo thông tin tài khoản
-        connection.query("INSERT INTO `thong_tin_tai_Khoan` (`maNguoiDung`, `maQuyenNguoiDung`, `ngayTao`, `ngayCapNhatCuoi`, `bienSoXe`, `ma_trang_thai`, `maNguoiTao`, `tenDangNhap`, `matKhau`) VALUES (?)", 
-            [req.body.maNguoiDung, req.body.maQuyenNguoiDung, req.body.ngayTao, req.body.ngayCapNhatCuoi, req.body.bienSoXe, req.body.ma_trang_thai, req.body.maNguoiTao, req.body.tenDangNhap, req.body.matKhau]
-        , (err) => {
-            res.send("Thêm tài khoản thành công")
-        })
-    })
-})
 
 //API tạo thông tin tài khoản phần đăng nhập
 app.use("/thongTinTaiKhoan", thongTinTaiKhoanRoutes);
@@ -133,3 +88,8 @@ app.use("/changePassword", changePasswordRoutes);
 app.listen(port, () => {
     console.log(`Ban dang o cong: ${port}`)
 })
+
+
+
+
+
