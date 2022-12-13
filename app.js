@@ -1,21 +1,41 @@
 const express = require('express');
 const { json } = require('express/lib/response');
-const nodemailer = require("nodemailer");
+
 const mysql = require('mysql2');
 
 const bodyParser = require('body-parser');
 
-
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    database: 'Grab',
-    password: ''
-});
-
+const connection = require("./database/mysqlDB");
 
 const app = express()
 const port = 3000
+
+// database init
+function mysqlConnect() {
+  global.connection = mysql.createConnection(connection);
+
+  global.connection.connect(function (err) {
+    if (err) {
+      console.log("error when connecting to db");
+      setTimeout(mysqlConnect, 2000);
+    }
+    console.log("connected to database");
+  });
+  global.connection.on("error", function (err) {
+    if (err.code === "PROTOCOL_CONNECTION_LOST") {
+      mysqlConnect();
+    } else {
+      throw err;
+    }
+  });
+}
+  
+mysqlConnect();
+
+//Routes
+const thongTinTaiKhoanRoutes = require("./routes/thongTinTaiKhoan");
+const sendEmailRoutes = require("./routes/sendEmail");
+const changePasswordRoutes = require("./routes/changePassword");
 
 
 //Để đọc dạng json người dùng nhập vào
@@ -24,9 +44,8 @@ app.use(bodyParser.json());
 
 
 
-
 //API lấy về các tỉnh
-app.get('/conscious', (req, res) => {
+app.get('/province ', (req, res) => {
     connection.connect(() => {
         connection.query("SELECT * FROM tinh", (err, ketQuaTinh) => {
             res.send(ketQuaTinh)
@@ -100,56 +119,13 @@ app.post('/creatAccount', (req, res) => {
 })
 
 //API tạo thông tin tài khoản phần đăng nhập
-app.get('/thongTinTaiKhoan', (req, res) => {
-        connection.connect(() => {
-            connection.query("SELECT * FROM thong_tin_tai_khoan WHERE tenDangNhap  = (?) AND matKhau = (?) ", [req.body.tenDangNhap, req.body.matKhau], (err) => {
-                res.send("Đăng nhập thành công")
-            })
-        })
-    })
-    //API quên mật khẩu 
-    app.post('/sendEmail', (req, res) => {
-        connection.connect(() => {
-            async function sendMessage() {
-                var transporter = nodemailer.createTransport({
-                    service: 'gmail',
-                    auth: {
-                        user: 'phuongtttph28706@fpt.edu.vn',
-                        pass: 'baonhi0908@'
-                    }
-                })
-                var mailOptions = {
-                    from: 'phuongtttph28706@fpt.edu.vn',
-                    to: `${req.body.email}`,
-                    subject: 'Sending message from Grab',
-                    text: 'Hello',
-                        html: `<a href="http://facebook.com">Need to reset password</a>`
-                }
-                await transporter.sendMail(mailOptions, (error, info) => {
-                    if (error) {
-                        console.log(error)
-                    } else {
-                        console.log('Email sent: ' + info.response)
-                    }
-                })
-            }
-            sendMessage();
-            res.send("Send Success!!")
-        })
-    })
-    app.put('/changePassword', (req, res) => {
-        connection.connect(() => {
-            if(req.body.matKhauMoi == req.body.nhapLaiMatKhauMoi) {
-                connection.query("UPDATE thong_tin_tai_khoan SET matKhau = ? where tenDangNhap = (?)", [req.body.matKhauMoi, req.body.tenDangNhap], (err) => {
-                    res.send("Thay đổi mật khẩu thành công")
-                })
-            } else {
-                res.send("Pass not match!!")
-            }
-        })
-    })
+app.use("/thongTinTaiKhoan", thongTinTaiKhoanRoutes);
 
+//API quên mật khẩu 
+app.use("/sendEmail", sendEmailRoutes);
 
+//API đổi mật khẩu
+app.use("/changePassword", changePasswordRoutes);
 
 
 
