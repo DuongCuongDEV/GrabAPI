@@ -10,7 +10,7 @@ const Trip = function (trip) {
 };
 
 Trip.gettrips = function (result) {
-    connection.query("SELECT longitude_bat_dau,laitude_bat_dau,longitude_ket_thuc,laitude_ket_thuc,ma_chuyen,ma_nguoi_dat,ma_giam_gia,do_dai_quang_duong,thanh_tien from thong_tin_chuyen_xe",(err,res) =>  {
+    connection.query("SELECT * from thong_tin_chuyen_xe inner join thong_tin_nguoi_dung ON thong_tin_chuyen_xe.ma_nguoi_dat = thong_tin_nguoi_dung.ma_nguoi_dung",(err,res) =>  {
         if (err) {
             result(err, null);
           } else {

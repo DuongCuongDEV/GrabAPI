@@ -31,10 +31,12 @@ function mysqlConnect() {
   mysqlConnect();
 
   const tripRoutes = require("./routes/trip");
+  const accRoutes = require("./routes/nguoidung");
 
   app.use(bodyParser.json());
   app.use(cors());
   app.use("/api", tripRoutes);
+  app.use("/api",accRoutes);
 
   const port = process.env.PORT || 3000;
 
