@@ -35,7 +35,7 @@ const datChuyenRoutes = require("./routes/datChuyen");
 const dsLoaiPhuongTienRoutes = require("./routes/dsLoaiPhuongTien");
 const dsPhuongThucThanhToanRoutes = require("./routes/dsPhuongThucThanhToan");
 const soDuRoutes = require("./routes/soDu");
-const thongTinTaiXeNhanChuyenRoutes = require("./routes/thongTinTaiXeNhanChuyen");
+
 
 // Middlewares
 app.use(bodyParser.json());
@@ -50,8 +50,6 @@ app.use("/api", datChuyenRoutes);
 app.use("/api", dsLoaiPhuongTienRoutes);
 app.use("/api", dsPhuongThucThanhToanRoutes);
 app.use("/api", soDuRoutes);
-app.use("/api", thongTinTaiXeNhanChuyenRoutes);
-
 
 
 // port

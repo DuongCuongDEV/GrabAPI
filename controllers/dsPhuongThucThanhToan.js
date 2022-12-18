@@ -1,6 +1,4 @@
-const API = require("../models/dsPhuongThucThanhToan");
-const phuongThucThanhToan = API.phuongThucThanhToan;
-
+const phuongThucThanhToan = require("../models/dsPhuongThucThanhToan");
 
 exports.readPTTT = async (req, res) => {
     phuongThucThanhToan.read(function (err, pttt) {

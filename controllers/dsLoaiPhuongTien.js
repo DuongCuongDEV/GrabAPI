@@ -1,5 +1,4 @@
-const API = require("../models/dsLoaiPhuongTien");
-const loaiPhuongTien = API.loaiPhuongTien;
+const loaiPhuongTien = require("../models/dsLoaiPhuongTien");
 
 exports.readLoaiPhuongTien = async (req, res) => {
     loaiPhuongTien.read(function (err, loaiphuongtien) {

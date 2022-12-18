@@ -15,4 +15,4 @@ loaiPhuongTien.read = function (result) {
     });
 };
 
-module.exports = {loaiPhuongTien};
+module.exports = loaiPhuongTien;

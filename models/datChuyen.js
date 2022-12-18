@@ -26,4 +26,14 @@ chuyenXe.create = function (chuyen, result) {    //Dat chuyen
     });
 };
 
-module.exports = {chuyenXe};
+chuyenXe.read = function (maChuyen, result) {    //Hien thi thong tin tai xe nhan chuyen + phuong tien
+  connection.query("SELECT ho_va_ten, anh_dai_dien, sdt1, sdt2, bien_so_xe, ten_hang_xe FROM thong_tin_chuyen_xe INNER JOIN thong_tin_nguoi_dung ON thong_tin_chuyen_xe.ma_tai_xe = thong_tin_nguoi_dung.ma_nguoi_dung INNER JOIN phuong_tien_nguoi_dung ON phuong_tien_nguoi_dung.ma_nguoi_dung = thong_tin_nguoi_dung.ma_nguoi_dung INNER JOIN hang_xe ON phuong_tien_nguoi_dung.ma_hang_xe = hang_xe.ma_hang_xe WHERE ma_chuyen = ?", maChuyen, (err, res) => {
+      if (err) {
+          result(err, null);
+      } else {
+          result(null, res);
+      }
+  });
+};
+
+module.exports = chuyenXe;

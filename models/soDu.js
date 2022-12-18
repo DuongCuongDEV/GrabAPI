@@ -17,4 +17,4 @@ taiKhoanNganHang.read = function(username, result) {
     });
 };
 
-module.exports = {taiKhoanNganHang};
+module.exports = taiKhoanNganHang;

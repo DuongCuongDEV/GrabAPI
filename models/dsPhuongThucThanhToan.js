@@ -14,4 +14,4 @@ phuongThucThanhToan.read = function (result) {
     });
 };
 
-module.exports = {phuongThucThanhToan};
+module.exports = phuongThucThanhToan;

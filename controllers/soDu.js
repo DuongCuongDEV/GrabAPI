@@ -1,6 +1,4 @@
-const API = require("../models/soDu");
-const taiKhoanNganHang = API.taiKhoanNganHang;
-
+const taiKhoanNganHang = require("../models/soDu");
 
 exports.readTKNH = async (req, res) => {
     const id = req.params.usernameLK;
