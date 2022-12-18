@@ -39,7 +39,9 @@ const xaRoutes = require("./routes/layXa");
 const thongTinNguoiDung = require("./routes/dangKy");
 const thongTinTaiKhoanRoutes = require("./routes/thongTinTaiKhoan");
 const sendEmailRoutes = require("./routes/sendEmail");
-const changePasswordRoutes = require("./routes/changePassword");
+const dangNhap = require("./routes/changePassword");
+const trangThai = require("./routes/changePassword");
+
 
 //Để đọc dạng json người dùng nhập vào
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -49,6 +51,8 @@ app.use("/api", tinhRoutes);
 app.use("/api", huyenRoutes);
 app.use("/api", xaRoutes);
 app.use("/api", thongTinNguoiDung)
+app.use("/api", dangNhap)
+app.use("/api", trangThai)
 
 //API check xem số điện thoại đấy tồn tại chưa
 app.get('/checkPhoneNumber', (req, res) => {
