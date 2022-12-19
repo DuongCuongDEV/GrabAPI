@@ -12,24 +12,24 @@ const port = process.env.PORT || 3000;
 
 // database init
 function mysqlConnect() {
-  global.connection = mysql.createConnection(connection);
+    global.connection = mysql.createConnection(connection);
 
-  global.connection.connect(function (err) {
-    if (err) {
-      console.log("error when connecting to db");
-      setTimeout(mysqlConnect, 2000);
-    }
-    console.log("connected to database");
-  });
-  global.connection.on("error", function (err) {
-    if (err.code === "PROTOCOL_CONNECTION_LOST") {
-      mysqlConnect();
-    } else {
-      throw err;
-    }
-  });
+    global.connection.connect(function(err) {
+        if (err) {
+            console.log("error when connecting to db");
+            setTimeout(mysqlConnect, 2000);
+        }
+        console.log("connected to database");
+    });
+    global.connection.on("error", function(err) {
+        if (err.code === "PROTOCOL_CONNECTION_LOST") {
+            mysqlConnect();
+        } else {
+            throw err;
+        }
+    });
 }
-  
+
 mysqlConnect();
 
 //Routes
@@ -39,8 +39,10 @@ const xaRoutes = require("./routes/layXa");
 const thongTinNguoiDung = require("./routes/dangKy");
 const thongTinTaiKhoanRoutes = require("./routes/thongTinTaiKhoan");
 const sendEmailRoutes = require("./routes/sendEmail");
-const dangNhap = require("./routes/changePassword");
-const trangThai = require("./routes/changePassword");
+const dangnhap = require("./routes/dangnhap");
+const trangthai = require("./routes/trangthai");
+
+
 
 
 //Để đọc dạng json người dùng nhập vào
@@ -53,13 +55,13 @@ app.use("/api", xaRoutes);
 app.use("/api", thongTinNguoiDung)
 app.use("/api", dangNhap)
 app.use("/api", trangThai)
+app.use("/api", dangnhap);
+app.use("/api", trangthai);
 
 //API check xem số điện thoại đấy tồn tại chưa
 app.get('/checkPhoneNumber', (req, res) => {
     connection.connect(() => {
-        connection.query("SELECT * FROM thong_tin_tai_khoan where tenDangNhap = (?)", 
-            [req.body.tenDangNhap]
-        , (err, thongtintaikhoan) => {
+        connection.query("SELECT * FROM thong_tin_tai_khoan where tenDangNhap = (?)", [req.body.tenDangNhap], (err, thongtintaikhoan) => {
             res.send(thongtintaikhoan)
         })
     })
@@ -68,9 +70,7 @@ app.get('/checkPhoneNumber', (req, res) => {
 //API lấy thông tin người dùng qua thông tin tài khoản
 app.get('/userInformation', (req, res) => {
     connection.connect(() => {
-        connection.query("SELECT * FROM thong_tin_nguoi_dung where ma_nguoi_dung = (?)", 
-            [req.body.maNguoiDung]
-        , (err, thongtinnguoidung) => {
+        connection.query("SELECT * FROM thong_tin_nguoi_dung where ma_nguoi_dung = (?)", [req.body.maNguoiDung], (err, thongtinnguoidung) => {
             res.send(thongtinnguoidung)
         })
     })
@@ -92,8 +92,3 @@ app.use("/changePassword", changePasswordRoutes);
 app.listen(port, () => {
     console.log(`Ban dang o cong: ${port}`)
 })
-
-
-
-
-
