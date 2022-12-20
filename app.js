@@ -9,6 +9,11 @@ const connection = require("./database/mysqlDB");
 
 const app = express();
 
+// Middlewares
+app.use(bodyParser.json());
+app.use(cors());
+
+// database init
 function mysqlConnect() {
     global.connection = mysql.createConnection(connection);
 
@@ -39,14 +44,18 @@ const thongTinNguoiDung = require("./routes/dangKy");
 const RouterUudai = require("./routes/uuDai");
 const RouterPTTT = require("./routes/phuongThucThanhToan");
 const RouterDanhSachDiaDiem = require("./routes/diaDiem");
+const thongTinTaiKhoanRoutes = require("./routes/thongTinTaiKhoan");
+const sendEmailRoutes = require("./routes/sendEmail");
+const dangnhap = require("./routes/dangnhap");
+const trangthai = require("./routes/trangthai");
+const changePasswordRoutes = require("./routes/changePassword");
 
 const datChuyenRoutes = require("./routes/datChuyen");
 const dsLoaiPhuongTienRoutes = require("./routes/dsLoaiPhuongTien");
 const dsPhuongThucThanhToanRoutes = require("./routes/dsPhuongThucThanhToan");
 const soDuRoutes = require("./routes/soDu");
 
-app.use(bodyParser.json());
-app.use(cors());
+
 app.use("/api", tripRoutes);
 app.use("/api", accRoutes);
 app.use("/grab", RouterUudai);
@@ -58,10 +67,22 @@ app.use("/api", dsLoaiPhuongTienRoutes);
 app.use("/api", dsPhuongThucThanhToanRoutes);
 app.use("/api", soDuRoutes);
 
+
 app.use("/api", tinhRoutes);
 app.use("/api", huyenRoutes);
 app.use("/api", xaRoutes);
 app.use("/api", thongTinNguoiDung)
+
+app.use("/api", dangnhap);
+app.use("/api", trangthai);
+//API tạo thông tin tài khoản phần đăng nhập
+app.use("/thongTinTaiKhoan", thongTinTaiKhoanRoutes);
+
+//API quên mật khẩu 
+app.use("/sendEmail", sendEmailRoutes);
+
+//API đổi mật khẩu
+app.use("/changePassword", changePasswordRoutes);
 
 
 
