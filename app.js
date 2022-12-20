@@ -9,6 +9,10 @@ const connection = require("./database/mysqlDatabase");
 
 const app = express();
 
+// Middlewares
+app.use(bodyParser.json());
+app.use(cors());
+
 // database init
 function mysqlConnect() {
     global.connection = mysql.createConnection(connection);
@@ -36,16 +40,31 @@ const tinhRoutes = require("./routes/layTinh");
 const huyenRoutes = require("./routes/layHuyen");
 const xaRoutes = require("./routes/layXa");
 const thongTinNguoiDung = require("./routes/dangKy");
+const thongTinTaiKhoanRoutes = require("./routes/thongTinTaiKhoan");
+const sendEmailRoutes = require("./routes/sendEmail");
+const dangnhap = require("./routes/dangnhap");
+const trangthai = require("./routes/trangthai");
+const changePasswordRoutes = require("./routes/changePassword");
 
-// Middlewares
-app.use(bodyParser.json());
-app.use(cors());
+
+
 
 // Routes
 app.use("/api", tinhRoutes);
 app.use("/api", huyenRoutes);
 app.use("/api", xaRoutes);
 app.use("/api", thongTinNguoiDung)
+
+app.use("/api", dangnhap);
+app.use("/api", trangthai);
+//API tạo thông tin tài khoản phần đăng nhập
+app.use("/thongTinTaiKhoan", thongTinTaiKhoanRoutes);
+
+//API quên mật khẩu 
+app.use("/sendEmail", sendEmailRoutes);
+
+//API đổi mật khẩu
+app.use("/changePassword", changePasswordRoutes);
 
 
 // PORT
