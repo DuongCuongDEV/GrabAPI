@@ -1,8 +1,8 @@
 const SendEmail = require("../models/sendEmail");
 
-exports.createSendEmail = async (req, res) => {
+exports.createSendEmail = async(req, res) => {
     SendEmail.create(req.body.email, (err, sendEmail) => {
-        if(err) {
+        if (err) {
             return res.send(err)
         }
         res.json(sendEmail);
