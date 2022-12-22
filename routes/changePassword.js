@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const {
-  updateChangePassword
+    updateChangePassword
 } = require("../controllers/changePassword");
 
-router.put("/", updateChangePassword); 
+router.put("/", updateChangePassword);
 
 module.exports = router;
