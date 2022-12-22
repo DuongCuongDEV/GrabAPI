@@ -14,7 +14,6 @@ ChangePassword.update = function(changePassword, result) {
             } else {
                 result(null, "Thay đổi mật khẩu thành công")
             }
-
         })
     } else {
         result("Pass not match!!", null)

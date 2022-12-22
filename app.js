@@ -1,14 +1,17 @@
-const express = require('express');
-const { json } = require('express/lib/response');
+const express = require("express");
+const mysql = require("mysql2");
+const bodyParser = require("body-parser");
+const cors = require("cors");
 
-const mysql = require('mysql2');
-
-const bodyParser = require('body-parser');
-
-const connection = require("./database/mysqlDB");
 require("dotenv").config();
-const app = express()
-const port = process.env.PORT || 3000;
+
+const connection = require("./database/mysqlDatabase");
+
+const app = express();
+
+// Middlewares
+app.use(bodyParser.json());
+app.use(cors());
 
 // database init
 function mysqlConnect() {
@@ -32,51 +35,46 @@ function mysqlConnect() {
 
 mysqlConnect();
 
-//Routes
+const tripRoutes = require("./routes/trip");
+const accRoutes = require("./routes/nguoidung");
 const tinhRoutes = require("./routes/layTinh");
 const huyenRoutes = require("./routes/layHuyen");
 const xaRoutes = require("./routes/layXa");
 const thongTinNguoiDung = require("./routes/dangKy");
+const RouterUudai = require("./routes/uuDai");
+const RouterPTTT = require("./routes/phuongThucThanhToan");
+const RouterDanhSachDiaDiem = require("./routes/diaDiem");
 const thongTinTaiKhoanRoutes = require("./routes/thongTinTaiKhoan");
 const sendEmailRoutes = require("./routes/sendEmail");
 const dangnhap = require("./routes/dangnhap");
 const trangthai = require("./routes/trangthai");
+const changePasswordRoutes = require("./routes/changePassword");
+
+const datChuyenRoutes = require("./routes/datChuyen");
+const dsLoaiPhuongTienRoutes = require("./routes/dsLoaiPhuongTien");
+const dsPhuongThucThanhToanRoutes = require("./routes/dsPhuongThucThanhToan");
+const soDuRoutes = require("./routes/soDu");
 
 
+app.use("/api", tripRoutes);
+app.use("/api", accRoutes);
+app.use("/grab", RouterUudai);
+app.use("/grab", RouterPTTT);
+app.use("/grab", RouterDanhSachDiaDiem);
 
+app.use("/api", datChuyenRoutes);
+app.use("/api", dsLoaiPhuongTienRoutes);
+app.use("/api", dsPhuongThucThanhToanRoutes);
+app.use("/api", soDuRoutes);
 
-//Để đọc dạng json người dùng nhập vào
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
 
 app.use("/api", tinhRoutes);
 app.use("/api", huyenRoutes);
 app.use("/api", xaRoutes);
 app.use("/api", thongTinNguoiDung)
-app.use("/api", dangNhap)
-app.use("/api", trangThai)
+
 app.use("/api", dangnhap);
 app.use("/api", trangthai);
-
-//API check xem số điện thoại đấy tồn tại chưa
-app.get('/checkPhoneNumber', (req, res) => {
-    connection.connect(() => {
-        connection.query("SELECT * FROM thong_tin_tai_khoan where tenDangNhap = (?)", [req.body.tenDangNhap], (err, thongtintaikhoan) => {
-            res.send(thongtintaikhoan)
-        })
-    })
-})
-
-//API lấy thông tin người dùng qua thông tin tài khoản
-app.get('/userInformation', (req, res) => {
-    connection.connect(() => {
-        connection.query("SELECT * FROM thong_tin_nguoi_dung where ma_nguoi_dung = (?)", [req.body.maNguoiDung], (err, thongtinnguoidung) => {
-            res.send(thongtinnguoidung)
-        })
-    })
-})
-
-
 //API tạo thông tin tài khoản phần đăng nhập
 app.use("/thongTinTaiKhoan", thongTinTaiKhoanRoutes);
 
@@ -88,7 +86,10 @@ app.use("/changePassword", changePasswordRoutes);
 
 
 
-//Mở một cổng 3000 để chạy
+// PORT
+const port = process.env.PORT || 3000;
+
+// Starting a server
 app.listen(port, () => {
-    console.log(`Ban dang o cong: ${port}`)
-})
+    console.log(`app is running at ${port}`);
+});
