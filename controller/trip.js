@@ -20,7 +20,7 @@ exports.displayTrip = async (req, res) => {
 
 exports.updateTrip = async (req, res) => {
     const id = req.params.machuyen;
-    Trip.update(id, new Trip(req.body), function (err, trip) {
+    Trip.update(id,req.body.mataixe,req.body.matrangthai, function (err, trip) {
       if (err) {
         return res.status(403).send(err);
       }

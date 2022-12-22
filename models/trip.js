@@ -29,8 +29,8 @@ Trip.displaytrip = function (machuyen, result) {
     });
 };
 
-Trip.update = function (id, trip, result) {
-  connection.query("UPDATE thong_tin_chuyen_xe SET ? WHERE ma_chuyen = ?", [trip, id], function (
+Trip.update = function (id,ma_tai_xe,ma_trang_thai_chuyen_di, result) {
+  connection.query("UPDATE thong_tin_chuyen_xe SET ma_tai_xe = ?,ma_trang_thai_chuyen_di = ? WHERE ma_chuyen = ?", [ma_tai_xe,ma_trang_thai_chuyen_di, id], function (
     err,
     res
   ) {
