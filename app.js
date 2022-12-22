@@ -5,7 +5,7 @@ const cors = require("cors");
 
 require("dotenv").config();
 
-const connection = require("./database/mysqlDB");
+const connection = require("./database/mysqlDatabase");
 
 const app = express();
 
