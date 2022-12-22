@@ -68,13 +68,14 @@ app.use("/api", dsPhuongThucThanhToanRoutes);
 app.use("/api", soDuRoutes);
 
 
-app.use("/api", tinhRoutes);
-app.use("/api", huyenRoutes);
-app.use("/api", xaRoutes);
-app.use("/api", thongTinNguoiDung)
+// Routes
+app.use("/grab", tinhRoutes);
+app.use("/grab", huyenRoutes);
+app.use("/grab", xaRoutes);
+app.use("/grab", thongTinNguoiDung)
 
-app.use("/api", dangnhap);
-app.use("/api", trangthai);
+app.use("/grab", dangnhap);
+app.use("/grab", trangthai);
 //API tạo thông tin tài khoản phần đăng nhập
 app.use("/thongTinTaiKhoan", thongTinTaiKhoanRoutes);
 
