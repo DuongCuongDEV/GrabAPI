@@ -35,18 +35,37 @@ function mysqlConnect() {
 
 mysqlConnect();
 
-// Routes
+const tripRoutes = require("./routes/trip");
+const accRoutes = require("./routes/nguoidung");
 const tinhRoutes = require("./routes/layTinh");
 const huyenRoutes = require("./routes/layHuyen");
 const xaRoutes = require("./routes/layXa");
 const thongTinNguoiDung = require("./routes/dangKy");
+const RouterUudai = require("./routes/uuDai");
+const RouterPTTT = require("./routes/phuongThucThanhToan");
+const RouterDanhSachDiaDiem = require("./routes/diaDiem");
 const thongTinTaiKhoanRoutes = require("./routes/thongTinTaiKhoan");
 const sendEmailRoutes = require("./routes/sendEmail");
 const dangnhap = require("./routes/dangnhap");
 const trangthai = require("./routes/trangthai");
 const changePasswordRoutes = require("./routes/changePassword");
 
+const datChuyenRoutes = require("./routes/datChuyen");
+const dsLoaiPhuongTienRoutes = require("./routes/dsLoaiPhuongTien");
+const dsPhuongThucThanhToanRoutes = require("./routes/dsPhuongThucThanhToan");
+const soDuRoutes = require("./routes/soDu");
 
+
+app.use("/api", tripRoutes);
+app.use("/api", accRoutes);
+app.use("/grab", RouterUudai);
+app.use("/grab", RouterPTTT);
+app.use("/grab", RouterDanhSachDiaDiem);
+
+app.use("/api", datChuyenRoutes);
+app.use("/api", dsLoaiPhuongTienRoutes);
+app.use("/api", dsPhuongThucThanhToanRoutes);
+app.use("/api", soDuRoutes);
 
 
 // Routes
@@ -65,6 +84,7 @@ app.use("/sendEmail", sendEmailRoutes);
 
 //API đổi mật khẩu
 app.use("/changePassword", changePasswordRoutes);
+
 
 
 // PORT
