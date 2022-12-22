@@ -23,6 +23,7 @@ const DangKy = function(dangKy) {
 
 
 DangKy.taoMoi = function(dangKy, result) {
+    console.log(dangKy)
     connection.query("INSERT INTO thong_tin_nguoi_dung (`ho_va_ten`, `anh_dai_dien`, `sdt1`, `sdt2`, `email`, `ma_gioi_tinh`, `ngay_sinh`, `dia_chi_chi_tiet`, `ma_xa`) value (?)", [
         [dangKy.ho_va_ten, dangKy.anh_dai_dien, dangKy.sdt1, dangKy.sdt2, dangKy.email, dangKy.ma_gioi_tinh, dangKy.ngay_sinh, dangKy.dia_chi_chi_tiet, dangKy.ma_xa]
     ], function(err, res) {

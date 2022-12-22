@@ -4,6 +4,6 @@ const {
     dangNhapTaiKhoan,
 } = require("../controllers/dangnhap");
 
-router.get("/dangNhap", dangNhapTaiKhoan);
+router.post("/dangNhap", dangNhapTaiKhoan);
 
 module.exports = router;
