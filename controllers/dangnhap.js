@@ -6,9 +6,7 @@ exports.dangNhapTaiKhoan = async(req, res) => {
             ten_dang_nhap: "required",
             mat_khau: "required",
         });
-    }
-
-    
+    }    
     const username = req.body.ten_dang_nhap;
     const mat_khau = req.body.mat_khau;
 
