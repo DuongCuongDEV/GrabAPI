@@ -2,8 +2,8 @@
 
 const connection = {
     host: "localhost",
-    user: process.env.user,
-    password: process.env.pass,
+    user: "root",
+    password: "Chau1998",
     database: "Grab",
 };
 

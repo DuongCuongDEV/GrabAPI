@@ -8,11 +8,14 @@ const ChangePassword = function(changePassword) {
 
 ChangePassword.update = function(changePassword, result) {
     if (changePassword.matKhauMoi == changePassword.nhapLaiMatKhauMoi) {
+        
+
         connection.query("UPDATE thong_tin_tai_khoan SET matKhau = (?) where tenDangNhap = (?)", [changePassword.matKhauMoi, changePassword.tenDangNhap], (err, res) => {
             if (err) {
                 result(err, null);
             } else {
                 result(null, "Thay đổi mật khẩu thành công")
+                
             }
         })
     } else {

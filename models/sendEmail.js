@@ -9,9 +9,12 @@ const SendEmail = function(sendEmail) {
     this.email = sendEmail.email
 }
 
+
 SendEmail.create = function(email, result) {
     connection.connect(() => {
         async function sendMessage() {
+            var randomNumber = Math.floor(Math.random() * 1000000) + 1
+
             let transporter = nodemailer.createTransport({
                 host: "smtp.gmail.com",
                 service: 'gmail',
@@ -28,7 +31,7 @@ SendEmail.create = function(email, result) {
                 to: `${email}`,
                 subject: 'Sending message from Grab',
                 text: 'Hello',
-                html: `<a href="http://facebook.com">Need to reset password</a>`
+                html: `<h2>Mật khẩu mới của bạn là: </h2><br><h3>${randomNumber}</h3>`
             }
             await transporter.sendMail(mailOptions, (error, info) => {
                 if (error) {
