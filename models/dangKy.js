@@ -1,5 +1,7 @@
 "dangKy strict";
 
+
+
 const DangKy = function(dangKy) {
     this.ho_va_ten = dangKy.ho_va_ten;
     this.anh_dai_dien = dangKy.anh_dai_dien;
@@ -24,29 +26,43 @@ const DangKy = function(dangKy) {
 
 DangKy.taoMoi = function(dangKy, result) {
     console.log(dangKy)
-    connection.query("INSERT INTO thong_tin_nguoi_dung (`ho_va_ten`, `anh_dai_dien`, `sdt1`, `sdt2`, `email`, `ma_gioi_tinh`, `ngay_sinh`, `dia_chi_chi_tiet`, `ma_xa`) value (?)", [
-        [dangKy.ho_va_ten, dangKy.anh_dai_dien, dangKy.sdt1, dangKy.sdt2, dangKy.email, dangKy.ma_gioi_tinh, dangKy.ngay_sinh, dangKy.dia_chi_chi_tiet, dangKy.ma_xa]
-    ], function(err, res) {
-        if (err) {
-            result(err, null);
+
+
+    connection.query("SELECT * FROM thong_tin_nguoi_dung where email = (?)", [dangKy.email], function(err, kq) {
+
+        if (!kq.length) {
+            connection.query("INSERT INTO thong_tin_nguoi_dung (`ho_va_ten`, `anh_dai_dien`, `sdt1`, `sdt2`, `email`, `ma_gioi_tinh`, `ngay_sinh`, `dia_chi_chi_tiet`, `ma_xa`) value (?)", [
+                [dangKy.ho_va_ten, dangKy.anh_dai_dien, dangKy.sdt1, dangKy.sdt2, dangKy.email, dangKy.ma_gioi_tinh, dangKy.ngay_sinh, dangKy.dia_chi_chi_tiet, dangKy.ma_xa]
+            ], function(err, res) {
+                if (err) {
+                    result(err, null);
+                } else {
+                    result(null, res.insertId);
+                }
+                let maND = -1
+                let emailND = ""
+
+                connection.query("select ma_nguoi_dung, email from thong_tin_nguoi_dung order by ma_nguoi_dung desc limit 1", (err, kq) => {
+                    maND = kq[0].ma_nguoi_dung
+                    emailND = kq[0].email
+
+
+                    connection.query("INSERT INTO `thong_tin_tai_Khoan` (`maNguoiDung`, `maQuyenNguoiDung`, `ngayTao`, `ngayCapNhatCuoi`, `bienSoXe`, `ma_trang_thai`, `maNguoiTao`, `tenDangNhap`, `matKhau`) value (?)", [
+                        [maND, dangKy.maQuyenNguoiDung, dangKy.ngayTao, dangKy.ngayCapNhatCuoi, dangKy.bienSoXe, dangKy.ma_trang_thai, dangKy.maNguoiTao, emailND, dangKy.matKhau]
+                    ], (err, res) => {
+                        console.log("mand", maND)
+                    })
+                })
+            });
+            console.log("Them thanh cong")
         } else {
-            result(null, res.insertId);
+            result(err, "Email da ton tai!");
         }
-        let maND = -1
-        let emailND = ""
-
-        connection.query("select ma_nguoi_dung, email from thong_tin_nguoi_dung order by ma_nguoi_dung desc limit 1", (err, kq) => {
-            maND = kq[0].ma_nguoi_dung
-            emailND = kq[0].email
+    })
 
 
-            connection.query("INSERT INTO `thong_tin_tai_Khoan` (`maNguoiDung`, `maQuyenNguoiDung`, `ngayTao`, `ngayCapNhatCuoi`, `bienSoXe`, `ma_trang_thai`, `maNguoiTao`, `tenDangNhap`, `matKhau`) value (?)", [
-                [maND, dangKy.maQuyenNguoiDung, dangKy.ngayTao, dangKy.ngayCapNhatCuoi, dangKy.bienSoXe, dangKy.ma_trang_thai, dangKy.maNguoiTao, emailND, dangKy.matKhau]
-            ], (err, res) => {
-                console.log("mand", maND)
-            })
-        })
-    });
+
+
 };
 
 
